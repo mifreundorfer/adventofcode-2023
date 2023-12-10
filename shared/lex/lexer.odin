@@ -18,6 +18,7 @@ Comma :: struct {}
 Semicolon :: struct {}
 Pipe :: struct {}
 EOF :: struct {}
+Minus :: struct {}
 Number :: struct {
     value: int,
 }
@@ -34,6 +35,7 @@ Token :: union {
     Comma,
     Semicolon,
     Pipe,
+    Minus,
 }
 
 init :: proc(lexer: ^Lexer, text: string) {
@@ -77,6 +79,9 @@ next :: proc(lexer: ^Lexer) -> Token {
     } else if lexer.current == '|' {
         decode_next_rune(lexer)
         lexer.token = Pipe{}
+    } else if lexer.current == '-' {
+        decode_next_rune(lexer)
+        lexer.token = Minus{}
     } else {
         decode_next_rune(lexer)
         lexer.token = nil
