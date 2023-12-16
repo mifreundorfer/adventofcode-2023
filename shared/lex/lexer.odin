@@ -19,6 +19,9 @@ Semicolon :: struct {}
 Pipe :: struct {}
 EOF :: struct {}
 Minus :: struct {}
+LeftBrace :: struct{}
+RightBrace :: struct{}
+Equals :: struct{}
 Number :: struct {
     value: int,
 }
@@ -36,6 +39,9 @@ Token :: union {
     Semicolon,
     Pipe,
     Minus,
+    Equals,
+    LeftBrace,
+    RightBrace,
 }
 
 init :: proc(lexer: ^Lexer, text: string) {
@@ -82,6 +88,15 @@ next :: proc(lexer: ^Lexer) -> Token {
     } else if lexer.current == '-' {
         decode_next_rune(lexer)
         lexer.token = Minus{}
+    } else if lexer.current == '=' {
+        decode_next_rune(lexer)
+        lexer.token = Equals{}
+    } else if lexer.current == '(' {
+        decode_next_rune(lexer)
+        lexer.token = LeftBrace{}
+    } else if lexer.current == ')' {
+        decode_next_rune(lexer)
+        lexer.token = RightBrace{}
     } else {
         decode_next_rune(lexer)
         lexer.token = nil
